@@ -7,9 +7,8 @@ module Register16bit(
 );
 
 always @(posedge clk) begin
-    if (!E)
-        Q <= Q;
-    else begin
+
+    if(E) begin
         case (FunSel)
             2'b00:
                 Q <= 16'b0;
