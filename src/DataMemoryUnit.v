@@ -1,4 +1,4 @@
-module DataMemoryUnit (
+.module DataMemoryUnit (
     input wire CS,
     input wire WR,
     input wire FunSel,

@@ -21,11 +21,11 @@ module DataMemory(
     always @(*) begin
         MemOut = ~WR && ~CS ? RAM_DATA[Address] : 8'hZ;
     end
-    
+
     //Write the data to RAM
     always @(posedge Clock) begin
         if (WR && ~CS) begin
-            RAM_DATA[Address] = Data; 
+            RAM_DATA[Address] = Data;
         end
     end
 endmodule
