@@ -10,7 +10,7 @@ module InstructionMemory(
     initial $readmemh("ROM.mem", ROM_DATA);
 
     always @(*) begin
-            MemOut = (CS) ? ROM_DATA[Address] : 8'b03;
+            MemOut = (CS) ? ROM_DATA[Address] : 8'b0;
     end
 
 

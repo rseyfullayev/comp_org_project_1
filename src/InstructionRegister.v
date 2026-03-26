@@ -1,18 +1,17 @@
-module InstructionRegister(
+module InstructionRegister (
     input wire CS,
     input wire LH,
-    input wire [7:0] I,
     input wire Clock,
-
-    output reg [15:0] Out
+    input wire [7:0] I,
+    output reg [15:0] IROut // Changed from 'Out' to 'IROut'
 );
 
     always @(posedge Clock) begin
-        if(CS) begin
-            if(LH)
-                Out[15:8] <= I;
-            else
-                Out[7:0] <= I;
+        if (CS) begin
+            if (LH) 
+                IROut[15:8] <= I;
+            else 
+                IROut[7:0] <= I;
         end
     end
 
