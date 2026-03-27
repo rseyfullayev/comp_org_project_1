@@ -2,29 +2,30 @@ module DataMemoryUnit (
     input wire CS,
     input wire WR,
     input wire FunSel,
-    input wire clk,
-    input wire [15:0] add,
+    input wire Clock,
+    input wire [15:0] Address,
     input wire [7:0] I,
-    output reg [15:0] out
+    
+    output wire [15:0] DMUOut 
 );
     wire [7:0] outReg;
 
-    DataMemory RAM(
-        .Address(add),
+    DataMemory DM(
+        .Address(Address),
         .Data(I),
         .WR(WR),
-        .CS(~CS),
-        .Clock(clk),
+        .CS(CS),
+        .Clock(Clock),
         .MemOut(outReg)
     );
 
-    // Renamed instance from datareg to DR to match ALUSys.DMU.DR.DROut
+    
     DataRegister DR (
-        .clk(clk),
+        .clk(Clock),
         .E(CS),
         .I(outReg),
         .FunSel(FunSel),
-        .DROut(out)
+        .DROut(DMUOut)
     );
 
 endmodule

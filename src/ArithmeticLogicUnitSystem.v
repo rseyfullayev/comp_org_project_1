@@ -95,10 +95,10 @@ module ArithmeticLogicUnitSystem(
         .CS(DMU_CS),
         .WR(DMU_WR),
         .FunSel(DMU_FunSel),
-        .clk(Clock),
+        .Clock(Clock),
         .add(OutD),
         .I(MuxCOut),
-        .out(DMUOut)
+        .DMUOut(DMUOut)
     );
 
 endmodule

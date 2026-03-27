@@ -11,7 +11,7 @@ module InstructionMemoryUnit(
     wire [7:0] outputROM;
     wire [15:0] outIR;
 
-    InstructionMemory ROM(
+    InstructionMemory IM(
         .Address(Address),
         .CS(CS),
         .MemOut(outputROM)
@@ -22,7 +22,7 @@ module InstructionMemoryUnit(
         .LH(LH),
         .Clock(Clock),
         .I(outputROM),
-        .Out(outIR)
+        .IROut(outIR)
     );
 
     always @(*) begin

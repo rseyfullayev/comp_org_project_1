@@ -134,7 +134,7 @@ module ArithmeticLogicUnit(
     input wire Clock,
 
     output wire [15:0] ALUOut,
-    output wire [3:0]  FlagsOut
+    output reg [3:0]  FlagsOut
 );
     wire [3:0] mask;
     wire [3:0] flagOut_internal;
@@ -157,6 +157,6 @@ module ArithmeticLogicUnit(
         .mask(mask),
         .Cin(Cin)
     );
-
-    assign FlagsOut = flagOut_internal;
+    always @(*)
+        FlagsOut = flagOut_internal;
 endmodule
