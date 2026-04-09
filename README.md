@@ -9,4 +9,8 @@
 - Memory Units $${\color{green}finished}$$
 - Control Unit and Instruction Logic $${\color{red}unfinished}$$
 
+## ALU System whole picture
+
+![Alt Text](images/system.png)
+
 --- © 2026 Ravan Seyfullayev and Raimbek Erik. All rights reserved.
