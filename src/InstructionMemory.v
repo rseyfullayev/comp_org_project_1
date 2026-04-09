@@ -1,3 +1,4 @@
+`timescale 1ns / 1ps
 module InstructionMemory(
     input wire [15:0] Address,
     input wire CS,

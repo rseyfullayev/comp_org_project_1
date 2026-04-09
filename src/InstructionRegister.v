@@ -1,13 +1,14 @@
+`timescale 1ns / 1ps
 module InstructionRegister (
-    input wire CS,
+    input wire Write,
     input wire LH,
     input wire Clock,
     input wire [7:0] I,
-    output reg [15:0] IROut // Changed from 'Out' to 'IROut'
+    output reg [15:0] IROut
 );
 
     always @(posedge Clock) begin
-        if (CS) begin
+        if (Write) begin
             if (LH) 
                 IROut[15:8] <= I;
             else 

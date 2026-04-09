@@ -1,12 +1,13 @@
+`timescale 1ns / 1ps
 module Register16bit(
-    input wire clk,
+    input wire Clock,
     input wire E,
     input wire [1:0] FunSel,
     input wire [15:0] I,
     output reg [15:0] Q
 );
 
-always @(posedge clk) begin
+always @(posedge Clock) begin
 
     if(E) begin
         case (FunSel)

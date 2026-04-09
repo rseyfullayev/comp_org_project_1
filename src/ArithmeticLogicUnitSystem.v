@@ -1,3 +1,23 @@
+`timescale 1ns / 1ps
+module MuxAB(
+    input wire [15:0] A,
+    input wire [15:0] B,
+    input wire [15:0] C,
+    input wire [15:0] D,
+    input wire [1:0] sel,
+    output reg [15:0] out
+);
+    always @(*) begin
+        case(sel)
+            2'b00:  out <= A;
+            2'b01:  out <= B;
+            2'b10:  out <= C;
+            2'b11:  out <= D;
+            default: out <= 16'b0;
+        endcase
+    end
+endmodule
+
 module ArithmeticLogicUnitSystem(
     input wire [2:0]  RF_OutASel, RF_OutBSel,
     input wire [1:0]  RF_FunSel,
@@ -11,7 +31,7 @@ module ArithmeticLogicUnitSystem(
     input wire [1:0]  MuxASel, MuxBSel,
     input wire        MuxCSel,
     input wire        Clock,
-    // Added outputs so the testbench can access them directly
+
     output wire [15:0] OutA, OutB, OutC, OutD, OutE,
     output wire [15:0] ALUOut, MuxAOut, MuxBOut, IROut,
     output wire [7:0]  MuxCOut,
@@ -22,10 +42,8 @@ module ArithmeticLogicUnitSystem(
     wire [15:0] DMUOut;
     wire [15:0] IMUOut;
 
-    // Flag assignments
     assign {Z, C, N, O} = flags;
 
-    // MuxC Logic
     assign MuxCOut = (MuxCSel) ? ALUOut[15:8] : ALUOut[7:0];
 
     ArithmeticLogicUnit ALU(
@@ -38,7 +56,6 @@ module ArithmeticLogicUnitSystem(
         .FlagsOut(flags)
     );
 
-    // Renamed from RF_input to MuxAOut to match simulation naming
     MuxAB muxA(
         .A(ALUOut),
         .B(OutC),
@@ -48,7 +65,6 @@ module ArithmeticLogicUnitSystem(
         .out(MuxAOut)
     );
 
-    // Renamed from ARF_input to MuxBOut to match simulation naming
     MuxAB muxB(
         .A(ALUOut),
         .B(OutC),
@@ -59,7 +75,7 @@ module ArithmeticLogicUnitSystem(
     );
 
     RegisterFile RF(
-        .clk(Clock),
+        .Clock(Clock),
         .I(MuxAOut),
         .RegSel(RF_RegSel),
         .ScrSel(RF_ScrSel),
@@ -71,7 +87,7 @@ module ArithmeticLogicUnitSystem(
     );
 
     AddressRegisterFile ARF(
-        .clk(Clock),
+        .Clock(Clock),
         .I(MuxBOut),
         .RegSel(ARF_RegSel),
         .FunSel(ARF_FunSel),
@@ -96,7 +112,7 @@ module ArithmeticLogicUnitSystem(
         .WR(DMU_WR),
         .FunSel(DMU_FunSel),
         .Clock(Clock),
-        .add(OutD),
+        .Address(OutD),
         .I(MuxCOut),
         .DMUOut(DMUOut)
     );

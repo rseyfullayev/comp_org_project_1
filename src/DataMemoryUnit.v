@@ -1,3 +1,4 @@
+`timescale 1ns / 1ps
 module DataMemoryUnit (
     input wire CS,
     input wire WR,
@@ -8,22 +9,22 @@ module DataMemoryUnit (
     
     output wire [15:0] DMUOut 
 );
-    wire [7:0] outReg;
+    wire [7:0] MemOut;
 
-    DataMemory DM(
+    DataMemory DM (
         .Address(Address),
         .Data(I),
         .WR(WR),
-        .CS(CS),
+        .CS(~CS),
         .Clock(Clock),
-        .MemOut(outReg)
+        .MemOut(MemOut)
     );
 
     
     DataRegister DR (
-        .clk(Clock),
+        .Clock(Clock),
         .E(CS),
-        .I(outReg),
+        .I(MemOut),
         .FunSel(FunSel),
         .DROut(DMUOut)
     );

@@ -1,5 +1,6 @@
+`timescale 1ns / 1ps
 module AddressRegisterFile(
-    input wire clk,
+    input wire Clock,
     input wire [15:0] I,
     input wire [2:0] RegSel,
     input wire [1:0] FunSel,
@@ -14,12 +15,11 @@ module AddressRegisterFile(
     reg E_PC, E_SP, E_AR;
     
 always @(*) begin
-    //Choosing the address registers to enable
     case (RegSel)
         3'b000: {E_PC, E_SP, E_AR} = 3'b111; // All enabled
         3'b001: {E_PC, E_SP, E_AR} = 3'b110; // PC and SP
         3'b010: {E_PC, E_SP, E_AR} = 3'b101; // PC and AR
-        3'b011: {E_PC, E_SP, E_AR} = 3'b011; // SP and AR
+        3'b011: {E_PC, E_SP, E_AR} = 3'b100; // Only PC
         3'b100: {E_PC, E_SP, E_AR} = 3'b011; // SP and AR
         3'b101: {E_PC, E_SP, E_AR} = 3'b010; // Only SP
         3'b110: {E_PC, E_SP, E_AR} = 3'b001; // Only AR
@@ -27,7 +27,6 @@ always @(*) begin
         default: {E_PC, E_SP, E_AR} = 3'b000; //None
     endcase
     
-    //Output C
     case (OutCSel)
         2'b00: OutC = PC_out;
         2'b01: OutC = PC_out;
@@ -35,17 +34,14 @@ always @(*) begin
         2'b11: OutC = SP_out;
     endcase
     
-    //Output D
     if (OutDSel) OutD = SP_out;
     else OutD = AR_out;
     
-    //Output E
     OutE = PC_out;
 end
     
-    //Instantiating the registers
     Register16bit PC(
-        .clk(clk),
+        .Clock(Clock),
         .E(E_PC),
         .FunSel(FunSel),
         .I(I),
@@ -53,7 +49,7 @@ end
     );
     
     Register16bit SP(
-        .clk(clk),
+        .Clock(Clock),
         .E(E_SP),
         .FunSel(FunSel),
         .I(I),
@@ -61,7 +57,7 @@ end
     );
     
     Register16bit AR(
-        .clk(clk),
+        .Clock(Clock),
         .E(E_AR),
         .FunSel(FunSel),
         .I(I),

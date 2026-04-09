@@ -1,19 +1,20 @@
+`timescale 1ns / 1ps
 module DataRegister(
-    input wire clk,
+    input wire Clock,
     input wire E,
     input wire [7:0] I,
     input wire FunSel,
 
-    output reg[15:0] DROut
+    output reg [15:0] DROut
 );
 
-always @( posedge clk) begin
+always @( posedge Clock) begin
 
     if(E) begin
         if(!FunSel)
-            DROut[7:0] <= I; // LSB
+            DROut[7:0] <= I;
         else
-            DROut[15:8] <= I; // MSB
+            DROut[15:8] <= I;
     end
 
 

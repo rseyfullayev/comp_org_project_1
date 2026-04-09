@@ -1,3 +1,4 @@
+`timescale 1ns / 1ps
 module InstructionMemoryUnit(
     input wire [15:0] Address,
     input wire CS,
@@ -18,7 +19,7 @@ module InstructionMemoryUnit(
     );
 
     InstructionRegister IR(
-        .CS(CS),
+        .Write(CS),
         .LH(LH),
         .Clock(Clock),
         .I(outputROM),
@@ -26,7 +27,7 @@ module InstructionMemoryUnit(
     );
 
     always @(*) begin
-        IMUOut[7:0]  = outIR[7:0];
+        IMUOut[7:0] = outIR[7:0];
         IMUOut[15:8] = 8'b0;
         IROut = outIR;
     end

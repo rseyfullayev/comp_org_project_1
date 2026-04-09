@@ -1,5 +1,6 @@
+`timescale 1ns / 1ps
 module RegisterFile(
-    input wire clk,
+    input wire Clock,
     input wire [15:0] I,
     input wire [3:0] RegSel,
     input wire [3:0] ScrSel,
@@ -21,64 +22,64 @@ module RegisterFile(
     wire [15:0] S4_out;
 
     Register16bit R1(
-        .clk(clk),
-        .E(~RegSel[0]),
+        .Clock(Clock),
+        .E(~RegSel[3]),
         .FunSel(FunSel),
         .I(I),
         .Q(R1_out)
     );
 
     Register16bit R2(
-        .clk(clk),
-        .E(~RegSel[1]),
+        .Clock(Clock),
+        .E(~RegSel[2]),
         .FunSel(FunSel),
         .I(I),
         .Q(R2_out)
     );
 
     Register16bit R3(
-        .clk(clk),
-        .E(~RegSel[2]),
+        .Clock(Clock),
+        .E(~RegSel[1]),
         .FunSel(FunSel),
         .I(I),
         .Q(R3_out)
     );
 
     Register16bit R4(
-        .clk(clk),
-        .E(~RegSel[3]),
+        .Clock(Clock),
+        .E(~RegSel[0]),
         .FunSel(FunSel),
         .I(I),
         .Q(R4_out)
     );
 
     Register16bit S1(
-        .clk(clk),
-        .E(~ScrSel[0]),
+        .Clock(Clock),
+        .E(~ScrSel[3]),
         .FunSel(FunSel),
         .I(I),
         .Q(S1_out)
     );
 
     Register16bit S2(
-        .clk(clk),
-        .E(~ScrSel[1]),
+        .Clock(Clock),
+        .E(~ScrSel[2]),
         .FunSel(FunSel),
         .I(I),
         .Q(S2_out)
     );
 
     Register16bit S3(
-        .clk(clk),
-        .E(~ScrSel[2]),
+        .Clock(Clock),
+        .E(~ScrSel[1]),
         .FunSel(FunSel),
         .I(I),
         .Q(S3_out)
     );
 
     Register16bit S4(
-        .clk(clk),
-        .E(~ScrSel[3]),
+        .Clock(Clock),
+        .E(~ScrSel[0]),
         .FunSel(FunSel),
         .I(I),
         .Q(S4_out)
