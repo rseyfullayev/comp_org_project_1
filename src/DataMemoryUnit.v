@@ -6,8 +6,8 @@ module DataMemoryUnit (
     input wire Clock,
     input wire [15:0] Address,
     input wire [7:0] I,
-    
-    output wire [15:0] DMUOut 
+
+    output wire [15:0] DMUOut
 );
     wire [7:0] MemOut;
 
@@ -20,10 +20,10 @@ module DataMemoryUnit (
         .MemOut(MemOut)
     );
 
-    
+
     DataRegister DR (
         .Clock(Clock),
-        .E(CS),
+        .E(CS), // TODO: @Raimbek please add WR input here. I forgot ( WR or ~WR)
         .I(MemOut),
         .FunSel(FunSel),
         .DROut(DMUOut)
