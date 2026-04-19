@@ -15,7 +15,7 @@
 module FileOperation();
     integer df, ef;
     integer fails = 0;
-    integer success = 0; 
+    integer success = 0;
     reg [64*8-1:0] SimulationName;
     task  InitializeSimulation;
             input FirstTest;
@@ -45,7 +45,7 @@ module FileOperation();
                 end
             end
         endtask
-        
+
         task FinishSimulation;
             begin
                 if (`DEBUG_FILE) begin
@@ -67,34 +67,34 @@ module FileOperation();
                 end
             end
         endtask
-        
-        
+
+
         task CheckValues;
             input [15:0] actual, expected, testno;
             input [32*8-1:0] name;
             begin
                 if (actual === expected) begin
-                    success = success + 1; 
+                    success = success + 1;
                     if (`DEBUG_FILE) begin
-                        $fwrite(df,"[PASS] Test No: %0d, Component: %0s, Actual Value: 0x%h, Expected Value: 0x%h\n", testno, name, actual, expected); 
+                        $fwrite(df,"[PASS] Test No: %0d, Component: %0s, Actual Value: 0x%h, Expected Value: 0x%h\n", testno, name, actual, expected);
                     end
                     if (`EVALUATION_FILE) begin
-                        $fwrite(ef,"%0s;%0d;%0s;1;0x%h;0x%h\n", SimulationName, testno, name, actual, expected); 
+                        $fwrite(ef,"%0s;%0d;%0s;1;0x%h;0x%h\n", SimulationName, testno, name, actual, expected);
                     end
                     if (`DEBUG_PRINT) begin
-                        $display("[PASS] Test No: %0d, Component: %0s, Actual Value: 0x%h, Expected Value: 0x%h", testno, name, actual, expected); 
+                        $display("[PASS] Test No: %0d, Component: %0s, Actual Value: 0x%h, Expected Value: 0x%h", testno, name, actual, expected);
                     end
                 end
                 else begin
                     fails = fails+1;
                     if (`DEBUG_FILE) begin
-                        $fwrite(df,"[FAIL] Test No: %0d, Component: %0s, Actual Value: 0x%h, Expected Value: 0x%h\n", testno, name, actual, expected); 
+                        $fwrite(df,"[FAIL] Test No: %0d, Component: %0s, Actual Value: 0x%h, Expected Value: 0x%h\n", testno, name, actual, expected);
                     end
                     if (`EVALUATION_FILE) begin
                         $fwrite(ef,"%0s;%0d;%0s;0;0x%h;0x%h\n", SimulationName, testno, name, actual, expected);
                     end
                     if (`DEBUG_PRINT) begin
-                        $display("[FAIL] Test No: %0d, Component: %0s, Actual Value: 0x%h, Expected Value: 0x%h", testno, name, actual, expected); 
+                        $display("[FAIL] Test No: %0d, Component: %0s, Actual Value: 0x%h, Expected Value: 0x%h", testno, name, actual, expected);
                     end
                 end
             end
@@ -103,7 +103,7 @@ endmodule
 
 module CrystalOscillator;
     reg clock;
-    
+
     task Clock;
         begin
             clock = 0; #20; clock=1; #20;
@@ -111,4 +111,18 @@ module CrystalOscillator;
     endtask
 
 endmodule
-    
+
+module ResetGenerator;
+    reg reset;
+
+    task ActivateReset;
+        begin
+            reset = 1; #5; reset=0; #5;
+        end
+    endtask
+    task DeactivateReset;
+        begin
+            reset = 1; #5;
+        end
+    endtask
+endmodule
