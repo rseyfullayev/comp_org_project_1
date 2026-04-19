@@ -9,9 +9,9 @@ module InstructionRegister (
 
     always @(posedge Clock) begin
         if (Write) begin
-            if (LH) 
+            if (LH)
                 IROut[15:8] <= I;
-            else 
+            else
                 IROut[7:0] <= I;
         end
     end

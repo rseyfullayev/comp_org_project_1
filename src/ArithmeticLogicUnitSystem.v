@@ -35,7 +35,7 @@ module ArithmeticLogicUnitSystem(
     output wire [15:0] OutA, OutB, OutC, OutD, OutE,
     output wire [15:0] ALUOut, MuxAOut, MuxBOut, IROut,
     output wire [7:0]  MuxCOut,
-    output wire        Z, C, N, O
+    output wire  Z, C, N, O
 );
 
     wire [3:0]  flags;
