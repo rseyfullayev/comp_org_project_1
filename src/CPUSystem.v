@@ -1,7 +1,7 @@
 module CPUSystem(
     input wire Clock,
     input wire Reset,
-    input wire [11:0] T
+    input wire [11:0] T // RF_ScrSel
 );
 
     reg [2:0] RF_OutASel, RF_OutBSel;
@@ -124,8 +124,13 @@ module CPUSystem(
             else if (T[2]) begin
                 case(Opcode)
                     6'h00: // BRA
+
                     6'h01: // BNE
+                        if(Z):
+
+
                     6'h02: // BEQ
+
                     6'h03: // BLT
                     6'h04: // BGT
                     6'h05: // BLE
@@ -133,6 +138,7 @@ module CPUSystem(
                     6'h07: // INC
                     6'h08: // DEC
                     6'h09: // LSL
+
                     6'h0A: // LSR
                     6'h0B: // ASR
                     6'h0C: // CSL
@@ -147,11 +153,76 @@ module CPUSystem(
                     6'h15: // SUB
                     6'h16: // MOV
                     6'h17: // IMM
+                endcase
+            end
+            else if (T[3]) begin
+                case(Opcode)
+                    6'h00: // BRA
+
+                    6'h01: // BNE
+                        if(Z):
 
 
+                    6'h02: // BEQ
+
+                    6'h03: // BLT
+                    6'h04: // BGT
+                    6'h05: // BLE
+                    6'h06: // BGE
+                    6'h07: // INC
+                    6'h08: // DEC
+                    6'h09: // LSL
+
+                    6'h0A: // LSR
+                    6'h0B: // ASR
+                    6'h0C: // CSL
+                    6'h0D: // CSR
+                    6'h0E: // NOT
+                    6'h0F: // AND
+                    6'h10: // ORR
+                    6'h11: // XOR
+                    6'h12: // NAND
+                    6'h13: // ADD
+                    6'h14: // ADC
+                    6'h15: // SUB
+                    6'h16: // MOV
+                    6'h17: // IMM
+                endcase
+            end
+            else if (T[4]) begin
+                case(Opcode)
+                    6'h00: // BRA
+
+                    6'h01: // BNE
+                        if(Z):
 
 
+                    6'h02: // BEQ
+
+                    6'h03: // BLT
+                    6'h04: // BGT
+                    6'h05: // BLE
+                    6'h06: // BGE
+                    6'h07: // INC
+                    6'h08: // DEC
+                    6'h09: // LSL
+
+                    6'h0A: // LSR
+                    6'h0B: // ASR
+                    6'h0C: // CSL
+                    6'h0D: // CSR
+                    6'h0E: // NOT
+                    6'h0F: // AND
+                    6'h10: // ORR
+                    6'h11: // XOR
+                    6'h12: // NAND
+                    6'h13: // ADD
+                    6'h14: // ADC
+                    6'h15: // SUB
+                    6'h16: // MOV
+                    6'h17: // IMM
                 endcase
             end
         end
+    end
 endmodule
