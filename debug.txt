@@ -1,0 +1,212 @@
+------------------------------------
+CPUSystem_LSL Simulation Started
+[FAIL] Test No: 1, Component: OutA, Actual Value: 0x0000, Expected Value: 0x0004
+[FAIL] Test No: 1, Component: ALUOut, Actual Value: 0x0000, Expected Value: 0x0008
+[FAIL] Test No: 1, Component: R2, Actual Value: 0x0002, Expected Value: 0x0004
+CPUSystem_LSL Simulation Finished
+------------------------------------
+
+
+
+------------------------------------
+CPUSystem_LSL Simulation Started
+[FAIL] Test No: 1, Component: OutA, Actual Value: 0x0000, Expected Value: 0x0004
+[FAIL] Test No: 1, Component: ALUOut, Actual Value: 0x0000, Expected Value: 0x0008
+[FAIL] Test No: 1, Component: R2, Actual Value: 0x0002, Expected Value: 0x0004
+CPUSystem_LSL Simulation Finished
+------------------------------------
+
+
+
+------------------------------------
+CPUSystem_LSL Simulation Started
+[FAIL] Test No: 1, Component: OutA, Actual Value: 0x0000, Expected Value: 0x0004
+[FAIL] Test No: 1, Component: ALUOut, Actual Value: 0x0000, Expected Value: 0x0008
+[FAIL] Test No: 1, Component: R2, Actual Value: 0x0002, Expected Value: 0x0004
+CPUSystem_LSL Simulation Finished
+------------------------------------
+
+
+
+------------------------------------
+CPUSystem_LSL Simulation Started
+[PASS] Test No: 1, Component: OutA, Actual Value: 0x0004, Expected Value: 0x0004
+[FAIL] Test No: 1, Component: ALUOut, Actual Value: 0x0004, Expected Value: 0x0008
+[PASS] Test No: 1, Component: R2, Actual Value: 0x0004, Expected Value: 0x0004
+CPUSystem_LSL Simulation Finished
+------------------------------------
+
+
+
+------------------------------------
+CPUSystem_LSL Simulation Started
+[FAIL] Test No: 1, Component: OutA, Actual Value: 0x0008, Expected Value: 0x0004
+[PASS] Test No: 1, Component: ALUOut, Actual Value: 0x0008, Expected Value: 0x0008
+[FAIL] Test No: 1, Component: R2, Actual Value: 0x0008, Expected Value: 0x0004
+CPUSystem_LSL Simulation Finished
+------------------------------------
+
+
+
+------------------------------------
+CPUSystem_LSL Simulation Started
+[FAIL] Test No: 1, Component: OutA, Actual Value: 0x0008, Expected Value: 0x0004
+[PASS] Test No: 1, Component: ALUOut, Actual Value: 0x0008, Expected Value: 0x0008
+[PASS] Test No: 1, Component: R2, Actual Value: 0x0004, Expected Value: 0x0004
+CPUSystem_LSL Simulation Finished
+------------------------------------
+
+
+
+------------------------------------
+CPUSystem_LSL Simulation Started
+[FAIL] Test No: 1, Component: OutA, Actual Value: 0x0008, Expected Value: 0x0004
+[PASS] Test No: 1, Component: ALUOut, Actual Value: 0x0008, Expected Value: 0x0008
+[PASS] Test No: 1, Component: R2, Actual Value: 0x0004, Expected Value: 0x0004
+CPUSystem_LSL Simulation Finished
+------------------------------------
+
+
+
+------------------------------------
+CPUSystem_LSL Simulation Started
+[PASS] Test No: 1, Component: OutA, Actual Value: 0x0004, Expected Value: 0x0004
+[FAIL] Test No: 1, Component: ALUOut, Actual Value: 0x0004, Expected Value: 0x0008
+[FAIL] Test No: 1, Component: R2, Actual Value: 0x0002, Expected Value: 0x0004
+CPUSystem_LSL Simulation Finished
+------------------------------------
+
+
+
+------------------------------------
+CPUSystem_LSL Simulation Started
+[PASS] Test No: 1, Component: OutA, Actual Value: 0x0004, Expected Value: 0x0004
+[FAIL] Test No: 1, Component: ALUOut, Actual Value: 0x0004, Expected Value: 0x0008
+[FAIL] Test No: 1, Component: R2, Actual Value: 0x0002, Expected Value: 0x0004
+[PASS] Test No: 1, Component: R2, Actual Value: 0x0004, Expected Value: 0x0004
+CPUSystem_LSL Simulation Finished
+------------------------------------
+
+
+
+------------------------------------
+CPUSystem_LSL Simulation Started
+[PASS] Test No: 1, Component: OutA, Actual Value: 0x0004, Expected Value: 0x0004
+[FAIL] Test No: 1, Component: ALUOut, Actual Value: 0x0004, Expected Value: 0x0008
+[FAIL] Test No: 1, Component: R2, Actual Value: 0x0002, Expected Value: 0x0004
+[PASS] Test No: 1, Component: R2, Actual Value: 0x0004, Expected Value: 0x0004
+CPUSystem_LSL Simulation Finished
+------------------------------------
+
+
+
+------------------------------------
+CPUSystem_LSL Simulation Started
+[FAIL] Test No: 1, Component: OutA, Actual Value: 0x000a, Expected Value: 0x0004
+[FAIL] Test No: 1, Component: ALUOut, Actual Value: 0x000a, Expected Value: 0x0008
+[FAIL] Test No: 1, Component: PC, Actual Value: 0x0005, Expected Value: 0x0004
+[FAIL] Test No: 1, Component: MUXBOUT, Actual Value: 0x000a, Expected Value: 0x0004
+CPUSystem_LSL Simulation Finished
+------------------------------------
+
+
+
+------------------------------------
+CPUSystem_LSL Simulation Started
+[PASS] Test No: 1, Component: OutA, Actual Value: 0x000a, Expected Value: 0x000a
+[FAIL] Test No: 1, Component: ALUOut, Actual Value: 0x000a, Expected Value: 0x0000
+[FAIL] Test No: 1, Component: PC, Actual Value: 0x0005, Expected Value: 0x0004
+[FAIL] Test No: 1, Component: OutC, Actual Value: 0x0005, Expected Value: 0x0004
+[FAIL] Test No: 1, Component: MUXAOUT, Actual Value: 0x000a, Expected Value: 0x0004
+[FAIL] Test No: 1, Component: MUXBOUT, Actual Value: 0x000a, Expected Value: 0x0004
+CPUSystem_LSL Simulation Finished
+------------------------------------
+
+
+
+------------------------------------
+CPUSystem_LSL Simulation Started
+[FAIL] Test No: 1, Component: OutA, Actual Value: 0x0000, Expected Value: 0x000a
+[PASS] Test No: 1, Component: ALUOut, Actual Value: 0x0000, Expected Value: 0x0000
+[FAIL] Test No: 1, Component: PC, Actual Value: 0x0005, Expected Value: 0x0004
+[FAIL] Test No: 1, Component: OutC, Actual Value: 0x0005, Expected Value: 0x0004
+[FAIL] Test No: 1, Component: MUXAOUT, Actual Value: 0x0000, Expected Value: 0x0004
+[FAIL] Test No: 1, Component: MUXBOUT, Actual Value: 0x0000, Expected Value: 0x0004
+CPUSystem_LSL Simulation Finished
+------------------------------------
+
+
+
+------------------------------------
+CPUSystem_LSL Simulation Started
+[PASS] Test No: 1, Component: OutA, Actual Value: 0x000a, Expected Value: 0x000a
+[FAIL] Test No: 1, Component: ALUOut, Actual Value: 0x000a, Expected Value: 0x0000
+[FAIL] Test No: 1, Component: PC, Actual Value: 0x0005, Expected Value: 0x0004
+[FAIL] Test No: 1, Component: OutC, Actual Value: 0x0005, Expected Value: 0x0004
+[FAIL] Test No: 1, Component: MUXAOUT, Actual Value: 0x000a, Expected Value: 0x0004
+[FAIL] Test No: 1, Component: MUXBOUT, Actual Value: 0x000a, Expected Value: 0x0004
+CPUSystem_LSL Simulation Finished
+------------------------------------
+
+
+
+------------------------------------
+CPUSystem_LSL Simulation Started
+[FAIL] Test No: 1, Component: OutA, Actual Value: 0x0000, Expected Value: 0x000a
+[PASS] Test No: 1, Component: ALUOut, Actual Value: 0x0000, Expected Value: 0x0000
+[FAIL] Test No: 1, Component: PC, Actual Value: 0x000a, Expected Value: 0x0004
+[FAIL] Test No: 1, Component: OutC, Actual Value: 0x000a, Expected Value: 0x0004
+[FAIL] Test No: 1, Component: MUXAOUT, Actual Value: 0x0000, Expected Value: 0x0004
+[FAIL] Test No: 1, Component: MUXBOUT, Actual Value: 0x0000, Expected Value: 0x0004
+CPUSystem_LSL Simulation Finished
+------------------------------------
+
+
+
+------------------------------------
+CPUSystem_LSL Simulation Started
+[FAIL] Test No: 1, Component: OutA, Actual Value: 0x0000, Expected Value: 0x000a
+[PASS] Test No: 1, Component: ALUOut, Actual Value: 0x0000, Expected Value: 0x0000
+[FAIL] Test No: 1, Component: PC, Actual Value: 0x0005, Expected Value: 0x0004
+[FAIL] Test No: 1, Component: OutC, Actual Value: 0x0005, Expected Value: 0x0004
+[FAIL] Test No: 1, Component: MUXAOUT, Actual Value: 0x0000, Expected Value: 0x0004
+[FAIL] Test No: 1, Component: MUXBOUT, Actual Value: 0x0000, Expected Value: 0x0004
+CPUSystem_LSL Simulation Finished
+------------------------------------
+
+
+
+------------------------------------
+CPUSystem_LSL Simulation Started
+[FAIL] Test No: 1, Component: OutA, Actual Value: 0x0000, Expected Value: 0x0005
+[FAIL] Test No: 1, Component: ALUOut, Actual Value: 0x0000, Expected Value: 0x000a
+[PASS] Test No: 1, Component: PC, Actual Value: 0x000a, Expected Value: 0x000a
+CPUSystem_LSL Simulation Finished
+------------------------------------
+
+
+
+------------------------------------
+CPUSystem_LSL Simulation Started
+[PASS] Test No: 1, Component: PC, Actual Value: 0x000a, Expected Value: 0x000a
+[PASS] Test No: 2, Component: R1, Actual Value: 0x0002, Expected Value: 0x0002
+[PASS] Test No: 3, Component: R2, Actual Value: 0xffff, Expected Value: 0xffff
+[PASS] Test No: 4, Component: AR, Actual Value: 0x800a, Expected Value: 0x800a
+[PASS] Test No: 5, Component: SP, Actual Value: 0x0005, Expected Value: 0x0005
+CPUSystem_LSL Simulation Finished
+------------------------------------
+
+
+
+------------------------------------
+CPUSystem_LSL Simulation Started
+[PASS] Test No: 1, Component: PC, Actual Value: 0x000a, Expected Value: 0x000a
+[PASS] Test No: 2, Component: R1, Actual Value: 0x0002, Expected Value: 0x0002
+[PASS] Test No: 3, Component: R2, Actual Value: 0xffff, Expected Value: 0xffff
+[PASS] Test No: 4, Component: AR, Actual Value: 0x800a, Expected Value: 0x800a
+[PASS] Test No: 5, Component: SP, Actual Value: 0x0005, Expected Value: 0x0005
+CPUSystem_LSL Simulation Finished
+------------------------------------
+
+
+
