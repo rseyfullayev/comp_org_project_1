@@ -16,4 +16,4 @@ You find our reports in the $\textbf{report}$ directory.
 
 ![Alt Text](images/system.png)
 
---- © 2026 Ravan Seyfullayev and Raimbek Erik. All rights reserved.
+© 2026 Ravan Seyfullayev and Raimbek Erik. All rights reserved.
