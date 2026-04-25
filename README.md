@@ -7,7 +7,8 @@
 - Basic Registers $${\color{green}finished}$$
 - ALU Logic $${\color{green}finished}$$
 - Memory Units $${\color{green}finished}$$
-- Control Unit and Instruction Logic $${\color{red}unfinished}$$
+- Control Unit and Instruction Logic $${\color{green}finished}$$
+- Simple program in using our computer and additional ISA elements $${\color{red}unfinished}$$
 
 ## ALU System whole picture
 
