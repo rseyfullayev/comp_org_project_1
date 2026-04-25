@@ -1,14 +1,134 @@
-\documentclass{article}
-\usepackage{graphicx} % Required for inserting images
+\documentclass[pdftex,12pt,a4paper]{article}
 
+\usepackage{graphicx}  
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{breakcites}
+\usepackage{indentfirst}
+\usepackage{pgfgantt}
+\usepackage{pdflscape}
+\usepackage{float}
+\usepackage{epsfig}
+\usepackage{epstopdf}
+\usepackage[cmex10]{amsmath}
+\usepackage{stfloats}
+\usepackage{multirow}
+\usepackage{mathtools}
 
-\title{comp_org_project_1}
-\author{Ravan Seyfullayev, Raimbek Erik}
-\date{March 2026}
+\renewcommand{\refname}{REFERENCES}
+\linespread{1.3}
 
 \begin{document}
 
+\begin{titlepage}
+\begin{center}
+\textbf{}\\
+\textbf{\Large{ISTANBUL TECHNICAL UNIVERSITY}}\\
+\vspace{0.5cm}
+\textbf{\Large{COMPUTER ENGINEERING DEPARTMENT}}\\
+\vspace{4cm}
+\textbf{\Large{BLG 222E\\ COMPUTER ORGANIZATION\\ PROJECT 2 REPORT}}\\
+\vspace{4cm}
+\begin{table}[ht]
+\centering
+\Large{
+\begin{tabular}{lcl}
+\textbf{CRN}  & : & 23728 \\
+\textbf{LECTURER}  & : & Mustafa Ersel Kamaşak \\
+\end{tabular}}
+\end{table}
+\vspace{1cm}
+\textbf{\Large{GROUP MEMBERS:}}\\
+\begin{table}[ht]
+\centering
+\Large{
+\begin{tabular}{rcl}
+150240928  & : & Ravan Seyfullayev \\
+150230932  & : & Raimbek Erik \\
+\end{tabular}}
+\end{table}
+\vspace{2.8cm}
+\textbf{\Large{SPRING 2026}}
 
-\section{Introduction}
+\end{center}
+\end{titlepage}
+
+\thispagestyle{empty}
+\addtocontents{toc}{\contentsline {section}{FRONT COVER}{1}{section*.1}}
+\addtocontents{toc}{\contentsline {section}{CONTENTS}{\thepage}{section*.2}}
+\setcounter{tocdepth}{4}
+\tableofcontents
+\clearpage
+
+\setcounter{page}{1}
+
+\section{INTRODUCTION}
+In this project, we expanded upon the modular 16-bit computer organization built in Project 1 by designing and implementing a hardwired control unit using Verilog HDL. The scope involved constructing an instruction cycle that correctly fetches, decodes, and executes a full suite of instructions. Since the instruction memory outputs only 8 bits per cycle, a multi-cycle fetch phase was necessary to construct the complete 16-bit instructions. A centralized control unit, represented by the \texttt{CPUSystem.v} module, was developed to synchronize the components---such as the General Purpose Register File (RF), Address Register File (ARF), Data Memory Unit (DMU), Instruction Memory Unit (IMU), and the Arithmetic Logic Unit (ALU). The primary goal was to ensure proper execution of data processing instructions, memory-addressing branches, and immediate value loading, all while satisfying cycle-based timing constraints.
+
+\section{MATERIALS AND METHODS}
+The design was implemented using Verilog HDL and verified via automated simulation testbenches executed through the Vivado 2017.4 design suite. The system's core orchestration occurs within a state machine, regulated by an active-low Reset signal and driven by sequential clock cycles labeled $T[0]$ to $T[4]$.
+
+\subsection{Instruction Cycle Architecture}
+The central processing timeline is governed by a clock-driven 12-bit shift register ($T$), where only one bit is active per cycle.
+\begin{itemize}
+    \item \textbf{Fetch Phase ($T_0$ and $T_1$):} The instructions are stored in memory in little-endian order. Because the Instruction Memory Unit outputs 8 bits per cycle, fetching the complete 16-bit instruction requires two clock cycles. In $T_0$, the program counter (PC) is used to load the lower byte of the instruction from memory into the lower half of the Instruction Register (IR[7:0]). Concurrently, the PC is incremented. In $T_1$, the higher byte is fetched into the upper half of the IR (IR[15:8]), yielding the full instruction.
+    \item \textbf{Execution Phase ($T_2$ to $T_4$):} Execution occurs conditionally across successive clock cycles depending on the operation type and the location of the source operands. Operands stored within the ARF that must be processed by the ALU are first transferred to temporary scratch registers within the RF, introducing additional cycle latency.
+\end{itemize}
+
+\subsection{Control Unit Design}
+The control logic utilizes continuous assignment blocks to decode the 6-bit OPCODE and corresponding Register Selection fields (RSEL, DSTREG, SREG1, and SREG2) directly from the \texttt{IROut} signal. 
+
+Combinational logic drives control signals across the datapath multiplexers (MuxA, MuxB, MuxC) to accurately route data between the RF, ARF, IMU, and DMU. Operations like additions or logic gates are deferred to the integrated ALU. Furthermore, precise condition checks are integrated for branch instructions (e.g., BRA, BNE, BEQ, BLT, BGT, BLE, BGE), adjusting the PC exclusively when relevant ALU flags (Zero, Carry, Negative, Overflow) meet the specific execution criteria.
+
+\section{RESULTS}
+
+\subsection{Clock Cycle Count per Instruction}
+The implementation accurately routes data across multiple clock cycles. Our hardwired control unit achieves execution times proportional to the instruction type and source operand locations. The complete clock cycle required per instruction is summarized in Table \ref{table:cycles}.
+
+\begin{table}[H]
+\centering
+\caption{Clock cycles required for each instruction execution, including the 2-cycle fetch.}
+\label{table:cycles}
+\vspace{0.3cm}
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{|l|c|l|}
+\hline
+\textbf{Instruction Type} & \textbf{Total Clock Cycles} & \textbf{Condition / Rationale} \\ \hline
+Branches (BRA, BNE, etc.) & 3 & Evaluates flags and updates PC in $T_2$. \\ \hline
+Immediate (IMM)           & 3 & Loads immediate value into RF in $T_2$. \\ \hline
+\multirow{2}{*}{One-Operand (LSL, NOT, MOV)} & 3 & If source operand is in RF (direct execution). \\ \cline{2-3} 
+                          & 4 & If source operand is in ARF (requires transfer to RF in $T_2$). \\ \hline
+Increment / Decrement     & 4 & In $T_2$ transfers to destination, in $T_3$ increments/decrements. \\ \hline
+\multirow{3}{*}{Two-Operand (ADD, AND, etc.)} & 3 & Both sources in RF (direct execution in $T_2$). \\ \cline{2-3} 
+                          & 4 & One source in RF, one in ARF (one transfer phase required). \\ \cline{2-3} 
+                          & 5 & Both sources in ARF (requires transfers in $T_2$ and $T_3$). \\ \hline
+\end{tabular}
+\end{table}
+
+\subsection{Simulation Outcomes}
+By running the \texttt{Run.bat} file over the integrated test suite, we confirmed that operations dynamically extended into $T_3$ and $T_4$ cycles seamlessly reset the state register back to $T_0$ via the \texttt{T\_Reset} trigger. Sequential alignment issues were eliminated, enabling the Data Memory Unit and Arithmetic Logic Unit to function properly without encountering bus contention.
+
+\section{DISCUSSION}
+The most prominent design decision in \texttt{CPUSystem.v} was the approach taken toward operand fetching for Arithmetic operations. Due to structural constraints, the ALU inherently processes values from the General Purpose Register File (RF). As a result, any instructions requiring operands stored in the Address Register File (ARF) necessitated temporary transfer stages. While this expanded the clock cycle counts up to 5 cycles for two-operand instructions strictly utilizing the ARF, it allowed for a generalized multiplexing architecture rather than introducing independent parallel paths directly to the ALU. 
+
+Furthermore, handling INC and DEC as multi-phase operations (copying the source to destination first, and applying the increment/decrement subsequently) was essential for preserving the original source operand if a distinct destination register was specified. 
+
+\section{CHALLENGES AND TROUBLESHOOTING}
+Several distinct issues were encountered during the formulation of the multi-cycle execution scheme:
+
+\subsection{Flag Register Management for INC and DEC}
+A critical issue originally emerged regarding flag management. The INC and DEC instructions initially bypassed the standard flag updating pipeline, resulting in testbench failures related to Zero and Negative flags not updating correctly. We resolved this by explicitly separating the instruction into two states: transferring the target value into the destination register during $T_2$, and then asserting the INC or DEC operations directly upon that destination register in $T_3$.
+
+\subsection{Two-Operand Latency Synchronization}
+Aligning operations that fetched both operands from the ARF caused sequence misalignment. If both \texttt{SREG1} and \texttt{SREG2} resided in the ARF, simultaneous transfers were impossible due to a single active multiplexer bus from ARF to RF. We resolved this by cascading the data loads---\texttt{SREG1} is copied in $T_2$, \texttt{SREG2} is copied in $T_3$, and the arithmetic logic applies the computation in $T_4$.
+
+\section{TASK DISTRIBUTION}
+The successful execution of this project required effective collaboration among group members. The task distribution was as follows:
+\begin{itemize}
+    \item \textbf{Ravan Seyfullayev:} Designed the multi-cycle fetch mechanism ($T_0$ and $T_1$), implemented decoding logic for all instructions, developed the execution paths for Branch and Immediate instructions, and led simulation testing in Vivado.
+    \item \textbf{Raimbek Erik:} Implemented the cycle-extension logic for arithmetic and logic operations ($T_2$ to $T_4$), resolved flag management errors specifically regarding the INC and DEC instructions, and managed report compilation.
+\end{itemize}
+
+\section{CONCLUSION}
+In conclusion, the completion of this hardwired control unit successfully realized the instruction set architecture initially outlined in Project 1. We navigated significant design constraints, particularly regarding the 8-bit memory limitations and complex sequential logic required to fetch operands from disparate register files. The implemented system successfully demonstrates a robust 16-bit processor backbone capable of handling synchronous execution delays, multiplexed operand paths, and comprehensive arithmetic logic operations.
 
 \end{document}
