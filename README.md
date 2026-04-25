@@ -10,6 +10,8 @@
 - Control Unit and Instruction Logic $${\color{green}finished}$$
 - Simple program in using our computer and additional ISA elements $${\color{red}unfinished}$$
 
+You find our reports in the $\textbf{report}$ directory.
+
 ## ALU System whole picture
 
 ![Alt Text](images/system.png)
