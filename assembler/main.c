@@ -4,6 +4,7 @@
 #include <stdint.h>
 #include "main.h" // data structures and maps
 
+#define MAX_LINES 256
 
 int _getRSEL(const char* reg_name) {
     struct RSEL rsel[] = {
@@ -99,8 +100,14 @@ char* trim(char* str) {
     return str;
 }
 
-uint16_t exec_instruction(const char* line, int current_add) {
-    uint16_t encoded = 0;
+
+
+
+
+
+int exec_instruction(const char* line, int current_add, uint16_t* out) {
+
+    *out = 0;
 
     char buffer[256];
     strcpy(buffer, line);
@@ -109,13 +116,11 @@ uint16_t exec_instruction(const char* line, int current_add) {
     int index_opcode = _getOpcodeValue(Opcode);
     if(index_opcode == -1) {
         fprintf(stderr, "Error -- at line %d: no such opcode exists\n", current_add + 1);
-        return 1;
+        return -1;
     }
 
     Instruction inst;
     memset(&inst, 0, sizeof(inst));
-
-
 
     if(index_opcode <= 6) {
         inst.type = TYPE_FIRST;
@@ -126,7 +131,6 @@ uint16_t exec_instruction(const char* line, int current_add) {
         if (addr_str != NULL) {
             inst.data.A.address = (int)strtol(addr_str, NULL, 0);
         }
-
     } else if(index_opcode == 23) { // IMM
         inst.type = TYPE_FIRST;
         inst.data.A.opcode_index = index_opcode;
@@ -139,9 +143,8 @@ uint16_t exec_instruction(const char* line, int current_add) {
 
         if(inst.data.A.reg == -1) {
             fprintf(stderr, "Error -- at line %d: missing or invalid register(s)\n", current_add + 1);
-            return 1;
+            return -1;
         }
-
     } else if((index_opcode >= 7 && index_opcode <= 14) || index_opcode == 22) {
         inst.type = TYPE_SECOND;
         inst.data.B.opcode_index = index_opcode;
@@ -158,11 +161,9 @@ uint16_t exec_instruction(const char* line, int current_add) {
 
         if(inst.data.B.DSTREG == -1 || inst.data.B.SREG1 == -1) {
             fprintf(stderr, "Error -- at line %d: missing or invalid register(s)\n", current_add + 1);
-            return 1;
+            return -1;
         }
-
     } else if(index_opcode >= 15 && index_opcode <= 21) {
-
         inst.type = TYPE_SECOND;
         inst.data.B.opcode_index = index_opcode;
 
@@ -181,26 +182,24 @@ uint16_t exec_instruction(const char* line, int current_add) {
 
         if(inst.data.B.DSTREG == -1 || inst.data.B.SREG1 == -1 || inst.data.B.SREG2 == -1) {
             fprintf(stderr, "Error -- at line %d: missing or invalid register(s)\n", current_add + 1);
-            return 1;
+            return -1;
         }
-
     } else {
         fprintf(stderr, "Error -- at line %d: unhandled opcode %d\n", current_add + 1, index_opcode);
-        return 1;
+        return -1;
     }
-
 
     if(inst.type == TYPE_FIRST) {
-        encoded |= (inst.data.A.opcode_index << 10);
-        encoded |= (inst.data.A.reg << 8);
-        encoded |= (inst.data.A.address << 0);
+        *out |= (inst.data.A.opcode_index << 10);
+        *out |= (inst.data.A.reg << 8);
+        *out |= (inst.data.A.address << 0);
     } else {
-        encoded |= (inst.data.B.opcode_index << 10);
-        encoded |= (inst.data.B.DSTREG << 7);
-        encoded |= (inst.data.B.SREG1 << 4);
-        encoded |= (inst.data.B.SREG2 << 1);
+        *out |= (inst.data.B.opcode_index << 10);
+        *out |= (inst.data.B.DSTREG << 7);
+        *out |= (inst.data.B.SREG1 << 4);
+        *out |= (inst.data.B.SREG2 << 1);
     }
-    return encoded;
+    return 0;
 }
 
 
@@ -213,9 +212,11 @@ void read_assembly(const char* filename) {
         return;
     }
 
-    uint8_t rom_data[256] = {0};
+    uint16_t all_instructions[MAX_LINES] = {0};
     char line_buffer[256];
     int current_add = 0;
+    int errors = 0;
+
 
     while(fgets(line_buffer, sizeof(line_buffer), file)) {
         line_buffer[strcspn(line_buffer, "\r\n")] = 0;
@@ -225,16 +226,28 @@ void read_assembly(const char* filename) {
         char *comment = strchr(line_buffer, '#');
         if (comment) *comment = '\0';
 
-        uint16_t inst = exec_instruction(line_buffer, current_add);
+        uint16_t encoded = 0;
+        int result = exec_instruction(line_buffer, current_add, &encoded);
 
-        if(inst == 1) return;
-        rom_data[current_add * 2]     = inst & 0xFF;
-        rom_data[current_add * 2 + 1] = (inst >> 8) & 0xFF;
-
-        printf("  -> 0x%04X\n", inst);
+        if(result == -1) {
+            errors++;
+        } else {
+            all_instructions[current_add] = encoded;
+        }
         current_add++;
     }
     fclose(file);
+
+    if(errors > 0) {
+        fprintf(stderr, "Assembly FAILED: %d error(s).\n", errors);
+        return;
+    }
+
+    uint8_t rom_data[256] = {0};
+    for(int i = 0; i < current_add; i++) {
+        rom_data[i * 2]     = all_instructions[i] & 0xFF;
+        rom_data[i * 2 + 1] = (all_instructions[i] >> 8) & 0xFF;
+    }
 
     FILE* out = fopen("ROM.mem", "w");
     if (out == NULL) {
@@ -245,7 +258,7 @@ void read_assembly(const char* filename) {
         fprintf(out, "%02X\n", rom_data[i]);
     }
     fclose(out);
-    printf("ROM.mem written successfully (%d instructions)\n", current_add);
+    printf("\nROM.mem written successfully (%d instructions)\n", current_add);
 }
 
 int main(int argc, char *argv[]){
