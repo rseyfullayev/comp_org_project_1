@@ -20,6 +20,16 @@ You find our reports in the $\textbf{report}$ directory.
 
 The custom 16-bit architecture uses a simple, intuitive assembly language syntax.
 
+## How to Run the Assembler
+
+1. Navigate to the `assembler` directory and write your assembly code in a `.asm` file (e.g., `simple.asm`).
+
+2. Execute the assembler by passing your file as an argument:
+   ```bash
+   ./assembler simple.asm
+   ```
+
+Upon success, it will generate a `ROM.mem` file containing the assembled hex codes, ready to be loaded into the Verilog CPU simulation.
 ### Instruction Formats
 
 The assembler supports two primary instruction formats:
