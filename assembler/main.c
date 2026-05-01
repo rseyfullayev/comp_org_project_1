@@ -21,6 +21,25 @@ int _getRSEL(const char* reg_name) {
     }
     return -1;
 }
+Label labels[256];
+
+int label_count = 0;
+
+void save_label(const char* buffer, int curr_add) {
+    strcpy(labels[label_count].name, buffer);
+    labels[label_count].address = curr_add;
+    label_count++;
+}
+
+
+int label_interrupt(const char* label_name) {
+    for(int i = 0; i < label_count; ++i) {
+        if(strcmp(label_name, labels[i].name) == 0) {
+            return labels[i].address;
+        }
+    }
+    return -1;
+}
 
 
 int _getSecondDesignReg(const char* reg_name) {
@@ -111,7 +130,22 @@ int exec_instruction(const char* line, int current_add, uint16_t* out) {
 
     char buffer[256];
     strcpy(buffer, line);
-    const char* Opcode = strtok(buffer, " ");
+
+
+    char *colon = strchr(buffer, ':');
+    char *inst_start = buffer;
+
+    if (colon != NULL) {
+        *colon = '\0';
+        inst_start = colon + 1;
+    }
+
+    const char* Opcode = strtok(inst_start, " ");
+
+
+    if(Opcode == NULL) {
+        return 1;
+    }
 
     int index_opcode = _getOpcodeValue(Opcode);
     if(index_opcode == -1) {
@@ -127,9 +161,17 @@ int exec_instruction(const char* line, int current_add, uint16_t* out) {
         inst.data.A.opcode_index = index_opcode;
         inst.data.A.reg = 0;
         inst.data.A.address = 0;
+
         char *addr_str = strtok(NULL, " ");
-        if (addr_str != NULL) {
-            inst.data.A.address = (int)strtol(addr_str, NULL, 0);
+        if(addr_str == NULL) {
+            fprintf(stderr, "Error -- at line %d: wrong address\n", current_add + 1);
+        } else {
+            int is_label = label_interrupt(addr_str);
+            if(is_label != -1) {
+                inst.data.A.address = is_label;
+            } else {
+                inst.data.A.address = (int)strtol(addr_str, NULL, 0);
+            }
         }
     } else if(index_opcode == 23) { // IMM
         inst.type = TYPE_FIRST;
@@ -212,11 +254,10 @@ void read_assembly(const char* filename) {
         return;
     }
 
-    uint16_t all_instructions[MAX_LINES] = {0};
+
+    label_count = 0;
     char line_buffer[256];
     int current_add = 0;
-    int errors = 0;
-
 
     while(fgets(line_buffer, sizeof(line_buffer), file)) {
         line_buffer[strcspn(line_buffer, "\r\n")] = 0;
@@ -226,15 +267,59 @@ void read_assembly(const char* filename) {
         char *comment = strchr(line_buffer, '#');
         if (comment) *comment = '\0';
 
+
+        char* trimmed = trim(line_buffer);
+        if (trimmed[0] == '\0') continue;
+
+        char temp[256];
+        strcpy(temp, trimmed);
+        char *colon = strchr(temp, ':');
+
+        if (colon != NULL) {
+            *colon = '\0';
+            save_label(trim(temp), current_add);
+
+            char *rest = trim(colon + 1);
+            if (rest[0] == '\0') {
+                continue;
+            }
+        }
+        current_add++;
+    }
+
+    printf("[Pass 1] Found %d label(s)\n", label_count);
+    for(int i = 0; i < label_count; i++) {
+        printf("  %s -> 0x%02X\n", labels[i].name, labels[i].address);
+    }
+
+
+    rewind(file);
+    uint16_t all_instructions[MAX_LINES] = {0};
+    current_add = 0;
+    int errors = 0;
+
+    while(fgets(line_buffer, sizeof(line_buffer), file)) {
+        line_buffer[strcspn(line_buffer, "\r\n")] = 0;
+
+        if (line_buffer[0] == '\0' || line_buffer[0] == ' ') continue;
+
+        char *comment = strchr(line_buffer, '#');
+        if (comment) *comment = '\0';
+
+        char* trimmed2 = trim(line_buffer);
+        if (trimmed2[0] == '\0') continue;
+
         uint16_t encoded = 0;
-        int result = exec_instruction(line_buffer, current_add, &encoded);
+        int result = exec_instruction(trimmed2, current_add, &encoded);
 
         if(result == -1) {
             errors++;
-        } else {
+            current_add++;
+        } else if(result == 1) {} else {
             all_instructions[current_add] = encoded;
+            printf("  [0x%02X] 0x%04X\n", current_add, encoded);
+            current_add++;
         }
-        current_add++;
     }
     fclose(file);
 

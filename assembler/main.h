@@ -41,3 +41,9 @@ typedef struct {
     } data;
 
 } Instruction;
+
+
+typedef struct {
+    char name[32];
+    int address;
+} Label;
