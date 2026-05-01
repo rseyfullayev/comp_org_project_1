@@ -1,4 +1,4 @@
-struct Instruction {
+struct OpcodeEntry {
     const char* name;
     int hex;
 };
@@ -25,3 +25,19 @@ typedef struct {
     int SREG1;
     int SREG2;
 } second_design; // INSTRUCTION DSTREG, SREG1, SREG2
+
+typedef enum {
+    TYPE_FIRST,
+    TYPE_SECOND
+} InstructionType;
+
+
+typedef struct {
+    InstructionType type;
+
+    union {
+        first_design A;
+        second_design B;
+    } data;
+
+} Instruction;
